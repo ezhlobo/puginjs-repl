@@ -1,0 +1,27 @@
+{
+  "name": "react-pug-repl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js",
+    "pull-bundle": "node scripts/pull-bundle.js",
+    "heroku-postbuild": "yarn build"
+  },
+  "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@zeit/next-css": "^1.0.1",
+    "codemirror": "^5.42.2",
+    "express": "^4.16.4",
+    "he": "^1.2.0",
+    "next": "^7.0.2",
+    "prettier": "^1.15.3",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3"
+  }
+}
