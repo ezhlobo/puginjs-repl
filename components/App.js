@@ -5,6 +5,7 @@ import versions from '../lib/versions'
 
 import Input from './Input'
 import Result from './Result'
+import GithubLogo from './GithubLogo'
 
 const getHash = () => {
   return process.browser
@@ -34,17 +35,34 @@ class App extends Component {
   render() {
     return (
       <div className="layout">
-        <Input
-          initialValue={getValue()}
-          onChange={this.handleInputChange}
-          error={this.state.error}
-        />
-        <Result
-          value={this.state.transformed}
-          version={this.state.version}
-          onNewVersion={this.handleNewVersion}
-          isTransforming={this.state.isTransforming}
-        />
+        <div className="layout__header">
+          This is beta, the result can be incorrect
+          <div className="layout__links">
+            <a href="https://github.com/pugjs/babel-plugin-transform-react-pug">
+              <GithubLogo width="20" height="20" />
+              Plugin
+            </a>
+            <a href="https://github.com/ezhlobo/puginjs-repl">
+              <GithubLogo width="20" height="20" />
+              REPL
+            </a>
+          </div>
+        </div>
+
+        <div className="layout__body">
+          <Input
+            initialValue={getValue()}
+            onChange={this.handleInputChange}
+            error={this.state.error}
+          />
+
+          <Result
+            value={this.state.transformed}
+            version={this.state.version}
+            onNewVersion={this.handleNewVersion}
+            isTransforming={this.state.isTransforming}
+          />
+        </div>
       </div>
     )
   }
