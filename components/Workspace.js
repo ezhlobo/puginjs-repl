@@ -21,10 +21,10 @@ const getHashFromCache = () =>
   getCache().code || ''
 
 const getCodeFromCache = () =>
-  (process.browser ? atob(this.getHashFromCache()) : '')
+  (process.browser ? atob(getHashFromCache()) : '')
 
 const getVersionFromCache = () =>
-  getCache().version
+  getCache().version || versions[0]
 
 class Workspace extends Component {
   state = {
