@@ -17,6 +17,15 @@ const setCache = (object) => {
   }))
 }
 
+const getHashFromCache = () =>
+  getCache().code || ''
+
+const getCodeFromCache = () =>
+  (process.browser ? atob(this.getHashFromCache()) : '')
+
+const getVersionFromCache = () =>
+  getCache().version
+
 class Workspace extends Component {
   state = {
     version: versions[0],
@@ -33,7 +42,7 @@ class Workspace extends Component {
     return (
       <React.Fragment>
         <Input
-          initialValue={this.getCodeFromCache()}
+          initialValue={getCodeFromCache()}
           onChange={this.handleInputChange}
           error={this.state.error}
         />
@@ -48,18 +57,6 @@ class Workspace extends Component {
     )
   }
 
-  getHashFromCache() {
-    return getCache().code || ''
-  }
-
-  getCodeFromCache() {
-    return process.browser ? atob(this.getHashFromCache()) : ''
-  }
-
-  getVersionFromCache() {
-    return getCache().version
-  }
-
   cacheCode(code) {
     setCache({ code: btoa(code || '') })
     this.setFromCache()
@@ -71,13 +68,13 @@ class Workspace extends Component {
   }
 
   setFromCache() {
-    const version = this.getVersionFromCache()
+    const version = getVersionFromCache()
 
     this.setState({ version }, () => this.transform())
   }
 
   transform() {
-    const hash = this.getHashFromCache()
+    const hash = getHashFromCache()
 
     this.setState({ isTransforming: true })
 
