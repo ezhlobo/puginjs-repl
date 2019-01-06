@@ -5,10 +5,21 @@ import versions from '../lib/versions'
 import Input from './Input'
 import Result from './Result'
 
+const getCache = () =>
+  JSON.parse(decodeURI(window.location.hash).substring(1) || '{}')
+
+const setCache = (object) => {
+  const cache = getCache()
+
+  window.location.hash = encodeURI(JSON.stringify({
+    ...cache,
+    ...object,
+  }))
+}
+
 class Workspace extends Component {
   state = {
     version: versions[0],
-    code: '',
     transformed: '',
     error: '',
     isTransforming: false,
@@ -37,12 +48,8 @@ class Workspace extends Component {
     )
   }
 
-  cache() {
-    return JSON.parse(decodeURI(window.location.hash).substring(1) || '{}')
-  }
-
   getHashFromCache() {
-    return this.cache().code || ''
+    return getCache().code || ''
   }
 
   getCodeFromCache() {
@@ -50,33 +57,23 @@ class Workspace extends Component {
   }
 
   getVersionFromCache() {
-    return this.cache().version
-  }
-
-  cacheObject(object) {
-    const cache = this.cache()
-
-    location.hash = encodeURI(JSON.stringify({
-      ...cache,
-      ...object,
-    }))
+    return getCache().version
   }
 
   cacheCode(code) {
-    this.cacheObject({ code: btoa(code || '') })
+    setCache({ code: btoa(code || '') })
     this.setFromCache()
   }
 
   cacheVersion(version) {
-    this.cacheObject({ version })
+    setCache({ version })
     this.setFromCache()
   }
 
   setFromCache() {
-    const code = this.getCodeFromCache()
     const version = this.getVersionFromCache()
 
-    this.setState({ code, version }, () => this.transform())
+    this.setState({ version }, () => this.transform())
   }
 
   transform() {

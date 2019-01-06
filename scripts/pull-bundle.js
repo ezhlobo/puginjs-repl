@@ -4,6 +4,7 @@ const { execSync } = require('child_process')
 const version = process.argv[2]
 
 function message(text) {
+  // eslint-disable-next-line no-console
   console.log(`\n\t${text}\n`)
 }
 
@@ -21,17 +22,13 @@ if (fs.existsSync(filepath('index.js'))) {
   process.exit()
 }
 
-generate()
-build()
-updateListOfVersions()
-
 function generate() {
   if (!fs.existsSync(filepath())) {
     fs.mkdirSync(filepath())
   }
 
   fs.writeFileSync(filepath('package.json'), `{"private": "true","dependencies": {"babel-plugin-transform-react-pug": "${version}"}}`)
-  fs.writeFileSync(filepath('init.js'), `module.exports = require('babel-plugin-transform-react-pug')`)
+  fs.writeFileSync(filepath('init.js'), 'module.exports = require("babel-plugin-transform-react-pug")')
 
   execSync(`cd ${filepath()} && yarn --no-lockfile`)
 }
@@ -59,3 +56,7 @@ function updateListOfVersions() {
 
   fs.writeFileSync('./lib/versions.js', `export default [${versions.reverse().map(item => `'${item}'`).join(', ')}]`)
 }
+
+generate()
+build()
+updateListOfVersions()

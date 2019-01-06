@@ -1,14 +1,22 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import dynamic from 'next/dynamic'
 
 class Input extends React.Component {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    initialValue: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
+    codemirror: PropTypes.func.isRequired,
+  }
+
   componentDidMount() {
     this.codemirror = this.codemirror || this.props.codemirror(document.getElementById('input'), {
       value: this.props.initialValue,
       mode: 'pug',
     })
 
-    this.codemirror.on('change', (instance, changes) => {
+    this.codemirror.on('change', (instance) => {
       const value = instance.doc.getValue()
 
       this.props.onChange(value)
@@ -37,7 +45,7 @@ const DynamicInput = dynamic({
   }),
   render: (props, { CodeMirror }) => (
     <Input codemirror={CodeMirror.default} {...props} />
-  )
+  ),
 })
 
 export default DynamicInput
