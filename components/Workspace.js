@@ -48,16 +48,21 @@ class Workspace extends Component {
   componentDidMount() {
     import('../bundles/6.0.1')
       .then((plugin) => {
-        const code = getCodeFromCache()
-
         this.plugin = plugin.default
         this.setState({ isPluginLoaded: true })
-        this.transform(code)
       })
-      .catch(() => {
-        this.setState({
-          error: 'Plugin can\'t be loaded, try again later',
-        })
+      .then(() => {
+        const code = getCodeFromCache()
+        this.transform(code)
+      }, (error) => {
+        // eslint-disable-next-line no-console
+        console.error(error)
+        this.setState({ error: 'Plugin can\'t be loaded, try again later' })
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error)
+        this.setState({ error: 'Unexpected error during transpiling' })
       })
   }
 
