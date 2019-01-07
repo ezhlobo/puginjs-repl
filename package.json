@@ -13,12 +13,16 @@
   },
   "dependencies": {
     "@babel/standalone": "^7.2.5",
+    "@material-ui/core": "^3.6.2",
+    "@material-ui/styles": "^3.0.0-alpha.3",
     "@zeit/next-css": "^1.0.1",
     "codemirror": "^5.42.2",
+    "jss": "^9.8.7",
     "next": "^7.0.2",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "react-jss": "^8.6.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.5",
@@ -38,7 +42,8 @@
       "React": true
     },
     "rules": {
-      "prefer-destructuring": "off"
+      "prefer-destructuring": "off",
+      "react/forbid-prop-types": "off"
     }
   }
 }

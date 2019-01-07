@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dynamic from 'next/dynamic'
 
+import Loader from './Loader'
+import Error from './Error'
+
 class Input extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
@@ -18,6 +21,7 @@ class Input extends React.Component {
     this.codemirror = this.codemirror || this.props.codemirror(document.getElementById('input'), {
       value: this.props.initialValue,
       mode: 'pug',
+      placeholder: 'Write your code here...',
     })
 
     this.codemirror.on('change', (instance) => {
@@ -29,15 +33,15 @@ class Input extends React.Component {
 
   render() {
     return (
-      <div className="input">
-        <div id="input" className="workspace" />
+      <React.Fragment>
+        <div id="input" />
 
         {this.props.error && (
-          <pre className="error">
+          <Error>
             {this.props.error}
-          </pre>
+          </Error>
         )}
-      </div>
+      </React.Fragment>
     )
   }
 }
@@ -50,6 +54,7 @@ const DynamicInput = dynamic({
   render: (props, { CodeMirror }) => (
     <Input codemirror={CodeMirror.default} {...props} />
   ),
+  loading: Loader,
 })
 
 export default DynamicInput

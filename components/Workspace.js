@@ -1,4 +1,10 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+
+import { withStyles } from '@material-ui/core/styles'
+
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
 
 import transform from '../lib/transform'
 import { setCodeToCache, getCodeFromCache } from '../lib/cache'
@@ -6,10 +12,37 @@ import { setCodeToCache, getCodeFromCache } from '../lib/cache'
 import Input from './Input'
 import Result from './Result'
 
+const getMinHeight = spacing => spacing.unit * 30
+
+const styles = ({ spacing, palette }) => ({
+  paper: {
+    minHeight: getMinHeight(spacing),
+    overflow: 'hidden',
+    position: 'relative',
+
+    '& .CodeMirror': {
+      height: 'auto !important',
+      minHeight: getMinHeight(spacing),
+      fontSize: 14,
+      display: 'flex',
+      flexDirection: 'column',
+    },
+
+    '& .CodeMirror-placeholder': {
+      color: palette.text.secondary,
+    },
+
+    '& .CodeMirror-scroll': {
+      flex: 1,
+    },
+  },
+})
+
 class Workspace extends Component {
   state = {
     transformed: '',
     error: '',
+    isPluginLoaded: false,
   }
 
   componentDidMount() {
@@ -18,23 +51,40 @@ class Workspace extends Component {
         const code = getCodeFromCache()
 
         this.plugin = plugin.default
+        this.setState({ isPluginLoaded: true })
         this.transform(code)
+      })
+      .catch(() => {
+        this.setState({
+          error: 'Plugin can\'t be loaded, try again later',
+        })
       })
   }
 
   render() {
-    return (
-      <React.Fragment>
-        <Input
-          initialValue={getCodeFromCache()}
-          onChange={this.handleInputChange}
-          error={this.state.error}
-        />
+    const { classes } = this.props
 
-        <Result
-          value={this.state.transformed}
-        />
-      </React.Fragment>
+    return (
+      <Grid container spacing={16}>
+        <Grid item xs={6}>
+          <Paper className={classes.paper}>
+            <Input
+              initialValue={getCodeFromCache()}
+              onChange={this.handleInputChange}
+              error={this.state.error}
+            />
+          </Paper>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Paper className={classes.paper}>
+            <Result
+              isReady={this.state.isPluginLoaded}
+              value={this.state.transformed}
+            />
+          </Paper>
+        </Grid>
+      </Grid>
     )
   }
 
@@ -63,4 +113,8 @@ class Workspace extends Component {
   }
 }
 
-export default Workspace
+Workspace.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
+
+export default withStyles(styles)(Workspace)

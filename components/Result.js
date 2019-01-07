@@ -2,10 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dynamic from 'next/dynamic'
 
+import Loader from './Loader'
+
 class Result extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
     codemirror: PropTypes.func.isRequired,
+    isReady: PropTypes.bool.isRequired,
   }
 
   componentDidMount() {
@@ -22,9 +25,13 @@ class Result extends React.Component {
   }
 
   render = () => (
-    <div className="result">
-      <div id="result" className="workspace" />
-    </div>
+    <React.Fragment>
+      {!this.props.isReady && (
+        <Loader />
+      )}
+
+      <div id="result" />
+    </React.Fragment>
   )
 }
 
@@ -36,6 +43,7 @@ const DynamicResult = dynamic({
   render: (props, { CodeMirror }) => (
     <Result codemirror={CodeMirror.default} {...props} />
   ),
+  loading: Loader,
 })
 
 export default DynamicResult
