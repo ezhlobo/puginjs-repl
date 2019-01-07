@@ -35,7 +35,7 @@ function generate() {
 
 function build() {
   try {
-    execSync(`./node_modules/.bin/browserify ${filepath('init.js')} --node --standalone plugin -o ${filepath('index.js')}`)
+    execSync(`./node_modules/.bin/browserify ${filepath('init.js')} --standalone plugin -o ${filepath('index.js')}`)
   } catch (e) {
     if (e.message.indexOf('Cannot find module \'babel-core\'') !== -1) {
       const babelCoreVersion = execSync(`npm info "babel-plugin-transform-react-pug@${version}" devDependencies.babel-core`).toString().trim()

@@ -6,8 +6,12 @@ class Input extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     initialValue: PropTypes.string.isRequired,
-    error: PropTypes.string.isRequired,
     codemirror: PropTypes.func.isRequired,
+    error: PropTypes.string,
+  }
+
+  static defaultProps = {
+    error: '',
   }
 
   componentDidMount() {
@@ -29,9 +33,9 @@ class Input extends React.Component {
         <div id="input" className="workspace" />
 
         {this.props.error && (
-          <div className="error">
+          <pre className="error">
             {this.props.error}
-          </div>
+          </pre>
         )}
       </div>
     )

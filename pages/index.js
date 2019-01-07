@@ -9,6 +9,10 @@ export default () => (
   <React.Fragment>
     <Head>
       <title>Pug-in-js REPL</title>
+
+      <script src="https://unpkg.com/@babel/standalone/babel.min.js" />
+      <script src="https://unpkg.com/prettier/standalone.js" />
+      <script src="https://unpkg.com/prettier/parser-babylon.js" />
     </Head>
 
     <App />
