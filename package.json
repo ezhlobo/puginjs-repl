@@ -4,9 +4,9 @@
   "private": true,
   "description": "",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "pull-bundle": "node scripts/pull-bundle.js",
     "heroku-postbuild": "yarn build",
     "lint": "eslint ./"
