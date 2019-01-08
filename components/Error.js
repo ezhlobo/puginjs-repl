@@ -10,6 +10,7 @@ const styles = ({ spacing, palette, shape }) => ({
     borderBottomLeftRadius: shape.borderRadius,
     borderBottomRightRadius: shape.borderRadius,
     color: palette.error.dark,
+    backgroundColor: 'rgb(255, 235, 238, 0.35)',
     overflow: 'auto',
   },
 })

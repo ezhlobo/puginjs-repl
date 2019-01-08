@@ -25,7 +25,7 @@ const styles = ({ spacing }) => ({
     },
   },
   body: {
-    padding: spacing.unit * 2,
+    padding: spacing.unit * 3,
   },
 })
 
