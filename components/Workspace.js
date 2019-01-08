@@ -46,7 +46,7 @@ class Workspace extends Component {
   }
 
   componentDidMount() {
-    import('../bundles/6.0.1')
+    import('../bundles/7.0.0')
       .then((plugin) => {
         this.plugin = plugin.default
         this.setState({ isPluginLoaded: true })
