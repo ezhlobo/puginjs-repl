@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "now-build": "next build",
+    "now-build": "echo 'Built on CI'",
     "start": "next start -p $PORT",
     "pull-bundle": "node scripts/pull-bundle.js",
     "heroku-postbuild": "yarn build",
