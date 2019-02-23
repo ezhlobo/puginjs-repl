@@ -2,7 +2,7 @@
 
 Make transformation of pug in js online. Set necessary version and share code snippets by copying URL.
 
-**[puginjs.herokuapp.com](https://puginjs.herokuapp.com)**
+**[puginjs.now.sh](https://puginjs.now.sh/)**
 
 ## Add new bundle
 
