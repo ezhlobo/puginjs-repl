@@ -21,7 +21,7 @@ class Input extends React.Component {
     this.codemirror = this.codemirror || this.props.codemirror(document.getElementById('input'), {
       value: this.props.initialValue,
       mode: 'pug',
-      placeholder: 'Write your code here...',
+      placeholder: 'Write your JavaScript here...',
     })
 
     this.codemirror.on('change', (instance) => {
