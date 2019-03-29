@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 
 import { withStyles } from '@material-ui/core/styles'
 
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 
 import transform from '../lib/transform'
 import { setCodeToCache, getCodeFromCache } from '../lib/cache'
+import examples from '../lib/examples'
 
 import Input from './Input'
 import Result from './Result'
@@ -36,24 +39,51 @@ const styles = ({ spacing, palette }) => ({
       flex: 1,
     },
   },
+
+  examples: {
+    marginTop: spacing.unit * 3,
+  },
+
+  buttonWrapper: {
+    marginTop: spacing.unit,
+  },
+
+  buttonSelected: {
+    backgroundColor: palette.primary.main,
+    color: palette.primary.contrastText,
+
+    '&:hover': {
+      backgroundColor: palette.primary.dark,
+    }
+  },
 })
+
+const getInitialValue = () => {
+  return getCodeFromCache()
+}
 
 class Workspace extends Component {
   state = {
     transformed: '',
     error: '',
+    example: '',
     isPluginLoaded: false,
   }
 
+  input = createRef()
+
   componentDidMount() {
+    const initialValue = getInitialValue()
+
+    this.determineExample(initialValue)
+
     import('../bundles/7.0.0')
       .then((plugin) => {
         this.plugin = plugin.default
         this.setState({ isPluginLoaded: true })
       })
       .then(() => {
-        const code = getCodeFromCache()
-        this.transform(code)
+        this.transform(initialValue)
       }, (error) => {
         // eslint-disable-next-line no-console
         console.error(error)
@@ -74,11 +104,28 @@ class Workspace extends Component {
         <Grid item xs={6}>
           <Paper className={classes.paper}>
             <Input
-              initialValue={getCodeFromCache()}
+              innerRef={this.input}
+              initialValue={getInitialValue()}
               onChange={this.handleInputChange}
               error={this.state.error}
             />
           </Paper>
+          <div className={classes.examples}>
+            <Typography variant="subtitle1">Examples</Typography>
+            {Object.keys(examples).map(key => (
+              <div key={key} className={classes.buttonWrapper}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="primary"
+                  onClick={this.createExampleLoader(key)}
+                  className={this.isPickedExample(key) ? classes.buttonSelected : ''}
+                >
+                  {examples[key].name}
+                </Button>
+              </div>
+            ))}
+          </div>
         </Grid>
 
         <Grid item xs={6}>
@@ -95,6 +142,7 @@ class Workspace extends Component {
 
   cacheCode(code) {
     setCodeToCache(code)
+    this.determineExample(code)
     this.transform(code)
   }
 
@@ -113,9 +161,29 @@ class Workspace extends Component {
     })
   }
 
-  handleInputChange = (value) => {
+  handleInputChange = value =>
     this.cacheCode(value)
+
+  createExampleLoader = (key) => () => {
+    const nextInput = examples[key].code
+
+    this.setState({ example: key })
+
+    this.input.current.updateValue(nextInput)
   }
+
+  determineExample = value => {
+    const possibleExampleKey = Object.keys(examples).find(key => examples[key].code === value)
+
+    if (possibleExampleKey) {
+      this.setState({ example: possibleExampleKey })
+    } else {
+      this.setState({ example: '' })
+    }
+  }
+
+  isPickedExample = key =>
+    this.state.example === key
 }
 
 Workspace.propTypes = {

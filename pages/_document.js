@@ -1,4 +1,5 @@
 import Document, { Head, Main, NextScript } from 'next/document'
+import flush from 'styled-jsx/server'
 
 export default class MyDocument extends Document {
   static getInitialProps(ctx) {
@@ -15,15 +16,24 @@ export default class MyDocument extends Document {
       return WrappedComponent
     })
 
+    let css
+
+    if (assetsProvider) {
+      css = assetsProvider.sheetsRegistry.toString()
+    }
+
     return {
       ...page,
       assetsProvider,
       // Styles fragment is rendered after the app and page rendering finish.
       styles: (
-        <style
-          id="jss-server-side"
-          dangerouslySetInnerHTML={{ __html: assetsProvider.sheetsRegistry.toString() }}
-        />
+        <React.Fragment>
+          <style
+            id="jss-server-side"
+            dangerouslySetInnerHTML={{ __html: css }}
+          />
+          {flush() || null}
+        </React.Fragment>
       ),
     }
   }
