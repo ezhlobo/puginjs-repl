@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import dynamic from 'next/dynamic'
 
 import { withStyles } from '@material-ui/core/styles'
-import IconButton from '@material-ui/core/IconButton'
-import Clear from '@material-ui/icons/Clear'
+import Button from '@material-ui/core/Button'
 
 import Loader from './Loader'
 import Error from './Error'
@@ -24,9 +23,11 @@ class Input extends React.Component {
     initialValue: PropTypes.string.isRequired,
     codemirror: PropTypes.func.isRequired,
     error: PropTypes.string,
+    classes: PropTypes.object,
   }
 
   static defaultProps = {
+    classes: {},
     error: '',
   }
 
@@ -51,12 +52,12 @@ class Input extends React.Component {
       <React.Fragment>
         <div id="input" />
 
-        <IconButton
+        <Button
           className={classes.clearButton}
           onClick={this.resetValue}
         >
-          <Clear fontSize="small" />
-        </IconButton>
+          Reset
+        </Button>
 
         {this.props.error && (
           <Error>
@@ -67,9 +68,8 @@ class Input extends React.Component {
     )
   }
 
-  updateValue = value => {
+  updateValue = value =>
     this.codemirror.doc.setValue(value)
-  }
 
   resetValue = () =>
     this.updateValue('')
@@ -83,7 +83,7 @@ const DynamicInput = dynamic({
     CodeMirror: () => import('../lib/CodeMirror'),
   }),
   render: (props, { CodeMirror }) => (
-    <StyledInput codemirror={CodeMirror.default} innerRef={props.innerRef} {...props} />
+    <StyledInput codemirror={CodeMirror.default} {...props} />
   ),
   loading: Loader,
 })

@@ -54,13 +54,11 @@ const styles = ({ spacing, palette }) => ({
 
     '&:hover': {
       backgroundColor: palette.primary.dark,
-    }
+    },
   },
 })
 
-const getInitialValue = () => {
-  return getCodeFromCache()
-}
+const getInitialValue = () => getCodeFromCache()
 
 class Workspace extends Component {
   state = {
@@ -69,8 +67,6 @@ class Workspace extends Component {
     example: '',
     isPluginLoaded: false,
   }
-
-  input = createRef()
 
   componentDidMount() {
     const initialValue = getInitialValue()
@@ -140,6 +136,8 @@ class Workspace extends Component {
     )
   }
 
+  input = createRef()
+
   cacheCode(code) {
     setCodeToCache(code)
     this.determineExample(code)
@@ -164,7 +162,7 @@ class Workspace extends Component {
   handleInputChange = value =>
     this.cacheCode(value)
 
-  createExampleLoader = (key) => () => {
+  createExampleLoader = key => () => {
     const nextInput = examples[key].code
 
     this.setState({ example: key })
@@ -172,7 +170,7 @@ class Workspace extends Component {
     this.input.current.updateValue(nextInput)
   }
 
-  determineExample = value => {
+  determineExample = (value) => {
     const possibleExampleKey = Object.keys(examples).find(key => examples[key].code === value)
 
     if (possibleExampleKey) {
