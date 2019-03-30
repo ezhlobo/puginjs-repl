@@ -2,8 +2,20 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dynamic from 'next/dynamic'
 
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+
 import Loader from './Loader'
 import Error from './Error'
+
+const styles = {
+  clearButton: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    zIndex: 100,
+  },
+}
 
 class Input extends React.Component {
   static propTypes = {
@@ -11,9 +23,11 @@ class Input extends React.Component {
     initialValue: PropTypes.string.isRequired,
     codemirror: PropTypes.func.isRequired,
     error: PropTypes.string,
+    classes: PropTypes.object,
   }
 
   static defaultProps = {
+    classes: {},
     error: '',
   }
 
@@ -21,7 +35,7 @@ class Input extends React.Component {
     this.codemirror = this.codemirror || this.props.codemirror(document.getElementById('input'), {
       value: this.props.initialValue,
       mode: 'pug',
-      placeholder: 'Write your code here...',
+      placeholder: 'Write your JavaScript here or check out examples below',
     })
 
     this.codemirror.on('change', (instance) => {
@@ -32,9 +46,18 @@ class Input extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
+
     return (
       <React.Fragment>
         <div id="input" />
+
+        <Button
+          className={classes.clearButton}
+          onClick={this.resetValue}
+        >
+          Reset
+        </Button>
 
         {this.props.error && (
           <Error>
@@ -44,7 +67,15 @@ class Input extends React.Component {
       </React.Fragment>
     )
   }
+
+  updateValue = value =>
+    this.codemirror.doc.setValue(value)
+
+  resetValue = () =>
+    this.updateValue('')
 }
+
+const StyledInput = withStyles(styles)(Input)
 
 const DynamicInput = dynamic({
   ssr: false,
@@ -52,7 +83,7 @@ const DynamicInput = dynamic({
     CodeMirror: () => import('../lib/CodeMirror'),
   }),
   render: (props, { CodeMirror }) => (
-    <Input codemirror={CodeMirror.default} {...props} />
+    <StyledInput codemirror={CodeMirror.default} {...props} />
   ),
   loading: Loader,
 })
