@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "name": "puginjs",
+  "name": "react",
+  "scope": "pugjs",
   "alias": "puginjs.now.sh",
   "builds": [
     { "src": "next.config.js", "use": "@now/next" }
