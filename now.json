@@ -2,8 +2,15 @@
   "version": 2,
   "name": "react",
   "scope": "pugjs",
-  "alias": "puginjs.now.sh",
+  "alias": "react.pugjs.org",
   "builds": [
     { "src": "next.config.js", "use": "@now/next" }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "status": 307,
+      "headers": { "Location": "/repl" }
+    }
   ]
 }

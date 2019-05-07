@@ -26,15 +26,10 @@ jobs:
 
       - run: yarn lint
 
-      - persist_to_workspace:
-          root: ~/app
-          paths: .
-
   deploy:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
 
       - run:
           name: Install NOW
@@ -44,16 +39,8 @@ jobs:
             yarn global add now
 
       - run:
-          name: Build
-          command: NODE_ENV=production yarn build
-
-      - run:
           name: Deploy
-          command: now -t $NOW_TOKEN
-
-      - run:
-          name: Create alias
-          command: now -t $NOW_TOKEN alias
+          command: now --target production -t $NOW_TOKEN
 
 workflows:
   version: 2
