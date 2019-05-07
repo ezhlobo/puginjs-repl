@@ -1,18 +1,16 @@
-import React from 'react'
-import Head from 'next/head'
+import { useEffect } from 'react'
+import Router from 'next/router'
 
-import App from '../components/App'
+function useDidMount(callback) {
+  useEffect(callback, [true])
+}
 
-export default () => (
-  <React.Fragment>
-    <Head>
-      <title>Pug-in-js REPL</title>
+function HomePage() {
+  useDidMount(() => {
+    Router.push('/repl', `/repl${window.location.hash}`)
+  })
 
-      <script src="https://unpkg.com/@babel/standalone/babel.min.js" />
-      <script src="https://unpkg.com/prettier/standalone.js" />
-      <script src="https://unpkg.com/prettier/parser-babylon.js" />
-    </Head>
+  return null
+}
 
-    <App />
-  </React.Fragment>
-)
+export default HomePage

@@ -1,4 +1,5 @@
 import App, { Container } from 'next/app'
+import Head from 'next/head'
 import JssProvider from 'react-jss/lib/JssProvider'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 
@@ -25,6 +26,10 @@ class EntryPoint extends App {
 
   render = () => (
     <Container>
+      <Head>
+        <title>Pug-in-js</title>
+      </Head>
+
       <JssProvider
         registry={this.assetsProvider.sheetsRegistry}
         generateClassName={this.assetsProvider.generateClassName}
