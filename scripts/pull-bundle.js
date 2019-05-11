@@ -14,10 +14,10 @@ if (!version) {
 }
 
 function filepath(filename) {
-  return [`./bundles/${version}`, filename].filter(Boolean).join('/')
+  return [`./static/bundles/${version}`, filename].filter(Boolean).join('/')
 }
 
-if (fs.existsSync(filepath('index.js'))) {
+if (fs.existsSync(filepath('index.min.js'))) {
   message('Version exists')
   process.exit()
 }
@@ -31,12 +31,17 @@ function generate() {
   fs.writeFileSync(filepath('init.js'), 'module.exports = require("babel-plugin-transform-react-pug")')
 
   execSync(`cd ${filepath()} && yarn --no-lockfile`)
+
+  console.log('Generated module and init.js', '\n')
 }
 
 function build() {
   try {
-    execSync(`./node_modules/.bin/browserify ${filepath('init.js')} --standalone plugin -o ${filepath('index.js')}`)
-    execSync(`./node_modules/.bin/uglifyjs ${filepath('index.js')} -o ${filepath('index.js')} --compress --mangle`)
+    execSync(`./node_modules/.bin/browserify ${filepath('init.js')} --standalone plugin -o ${filepath('index.min.js')}`)
+    console.log('Created index.min.js', '\n')
+
+    execSync(`./node_modules/.bin/uglifyjs ${filepath('index.min.js')} -o ${filepath('index.min.js')} --compress --mangle`)
+    console.log('Minified index.min.js', '\n')
   } catch (e) {
     if (e.message.indexOf('Cannot find module \'babel-core\'') !== -1) {
       const babelCoreVersion = execSync(`npm info "babel-plugin-transform-react-pug@${version}" devDependencies.babel-core`).toString().trim()
