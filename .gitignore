@@ -14,7 +14,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # tmp
-bundles/**/*.js
-bundles/**/*.json
-bundles/**/node_modules
-!bundles/**/index.js
+static/bundles/**/*.js
+static/bundles/**/*.json
+static/bundles/**/node_modules
+!static/bundles/**/index.min.js

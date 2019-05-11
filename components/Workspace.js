@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button'
 import transform from '../lib/transform'
 import { setCodeToCache, getCodeFromCache } from '../lib/cache'
 import examples from '../lib/examples'
+import { load } from '../lib/bundles'
 
 import Input from './Input'
 import Result from './Result'
@@ -73,7 +74,7 @@ class Workspace extends Component {
 
     this.determineExample(initialValue)
 
-    import('../bundles/7.0.0')
+    load('7.0.0')
       .then((plugin) => {
         this.plugin = plugin.default
         this.setState({ isPluginLoaded: true })
